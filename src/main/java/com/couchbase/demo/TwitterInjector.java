@@ -1,6 +1,9 @@
 package com.couchbase.demo;
 
 import com.couchbase.client.CouchbaseClient;
+import net.spy.memcached.internal.OperationFuture;
+import net.spy.memcached.internal.CheckedOperationTimeoutException;
+import net.spy.memcached.ops.OperationStatus;
 import org.json.JSONException;
 import org.json.JSONObject;
 import twitter4j.*;
@@ -19,20 +22,24 @@ public class TwitterInjector {
     public final static String COUCHBASE_URIS = "couchbase.uri.list";
     public final static String COUCHBASE_BUCKET = "couchbase.bucket";
     public final static String COUCHBASE_PASSWORD = "couchbase.password";
+    public final static String COUCHBASE_TWITTER_TRACK = "couchbase.twitter.track";
 
     private List<URI> couchbaseServerUris = new ArrayList<URI>();
     private String couchbaseBucket = "default";
     private String couchbasePassword = "";
+    private String[] track = null;
 
 
     public static void main(String[] args) {
         TwitterInjector twitterInjector = new TwitterInjector();
-        twitterInjector.setUp();
+        twitterInjector.setUp(args);
         twitterInjector.injectTweets();
     }
 
-    private void setUp() {
+    private void setUp(String[] args) {
         try {
+
+
             Properties prop = new Properties();
             InputStream in = TwitterInjector.class.getClassLoader().getResourceAsStream("twitter4j.properties");
             if (in == null) {
@@ -40,6 +47,20 @@ public class TwitterInjector {
             }
             prop.load(in);
             in.close();
+
+
+            if (args.length > 0) {
+                track = args[0].split(",");
+            } else {
+
+                if (track == null & prop.contains(COUCHBASE_TWITTER_TRACK) && !prop.getProperty(COUCHBASE_TWITTER_TRACK).isEmpty()  ) {
+                    track = prop.getProperty(COUCHBASE_TWITTER_TRACK).split(",");;
+                } else {
+                    System.out.println("No track : get all feeds...");
+                }
+
+            }
+
 
             if (prop.containsKey(COUCHBASE_URIS)) {
                 String[] uriStrings =  prop.getProperty(COUCHBASE_URIS).split(",");
@@ -86,10 +107,10 @@ public class TwitterInjector {
                     try {
                         JSONObject statusAsJson = new JSONObject(twitterMessage);
                         String idStr = statusAsJson.getString("id_str");
-                        cbClient.add( idStr ,0, twitterMessage  );
+                        cbClient.add(idStr, 0, twitterMessage);
                         System.out.print(".");
-                    } catch (JSONException e) {
-                        e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
 
@@ -111,8 +132,15 @@ public class TwitterInjector {
                 }
             };
 
-        twitterStream.addListener(listener);
-        twitterStream.sample();
+            twitterStream.addListener(listener);
+            if (track == null) {
+                twitterStream.sample();
+            } else {
+                long[] follow = {};
+                FilterQuery filter = new FilterQuery(0, follow, track );
+                twitterStream.filter(filter);
+            }
+
 
         } catch (Exception e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
