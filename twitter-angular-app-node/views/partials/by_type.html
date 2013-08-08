@@ -1,0 +1,29 @@
+<div class="container" >
+
+
+		<div class="span12 spacer1">
+			
+		      <table class="table" >
+		        <thead>  
+		          <tr> 
+		            <th>Group</th>
+					<th>Nb of Tweets</th>
+		          </tr> 
+			     </thead>  
+		        <tbody>
+		          <tr ng-repeat="entry in entries" >
+		            <td><a href="#/tweets/list/by_date/{{entry.key}}">{{entry.key}}</a></td>
+					<td>{{entry.value}}</td>
+				  </tr> 
+		        <tbody>
+			</table>
+		</div>
+		<div class="span6">
+		</div>
+	</div>
+ 
+   
+
+</div>
+
+

@@ -1,0 +1,38 @@
+<div class="container" >
+
+
+<div class="span12 spacer1" >
+  <button-group
+    states="statusList" 
+    state="status"
+    on-state-change="onStatusChange">
+  </button-group>
+</div>	
+
+		<div class="span12 spacer1">
+		      <table class="table" >
+		        <thead>  
+		          <tr> 
+		            <th>User</th>
+					<th>Text</th>
+					<th>Date</th>
+		          </tr> 
+			     </thead>  
+		        <tbody>
+		          <tr ng-repeat="entry in entries" >
+		            <td>{{entry.user.name}}</td>
+					<td><a href="/#/tweet/{{entry.id_str}}">{{entry.text}}</td>
+					<td>{{entry.created_at}}</td>
+				  </tr> 
+		        <tbody>
+			</table>
+		</div>
+		<div class="span6">
+		</div>
+	</div>
+ 
+   
+
+</div>
+
+

@@ -1,0 +1,19 @@
+{
+    "name": "couchbase-node-twitter-dashboard",
+    "version": "0.0.2",
+    "private": true,
+	"main" : "app.js",
+    "scripts" : {
+        "start" : "node app.js"
+     },
+    "dependencies":
+    {
+        "express": "3.x",
+        "couchbase": "0.0.12",
+        "ejs": ">= 0.0.1"
+    },
+  "engines" : {
+    "node" : ">=0.10"
+  }
+
+}
