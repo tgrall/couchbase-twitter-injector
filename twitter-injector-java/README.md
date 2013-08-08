@@ -4,7 +4,7 @@ Tweet Injector for Couchbase
 1- Create your Twitter API Keys from https://dev.twitter.com/
 
 
-2- Download the JAR file
+2- Download the jar from [here](http://db.tt/pwIYZiF8) or build it using mvn clean package.
 
 
 3- Create a new twitter4j.properties file with the following content
