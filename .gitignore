@@ -3,3 +3,14 @@
 target
 src/main/java/twitter4j.properties
 node_modules
+build
+.gradle
+src/main/resources/twitter4j.properties
+
+twitter-injector-java/src/main/resources/twitter4j.properties
+
+twitter-injector-java/twitter4j.properties
+
+twitter-injector-java/src/main/java/resources/twitter4j.properties
+
+twitter-injector-java/src/twitter4j.properties
