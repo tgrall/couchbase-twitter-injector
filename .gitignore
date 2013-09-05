@@ -3,3 +3,7 @@
 target
 src/main/java/twitter4j.properties
 node_modules
+build
+.gradle
+
+*4j.properties
